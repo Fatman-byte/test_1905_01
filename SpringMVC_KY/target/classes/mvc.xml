@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   xml:  根  开  闭
+   dtd: document type definition   xxx.dtd
+   xsd: xml schema definition    xxxx.xsd
+   标签，属性，子标签，顺序
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 注解扫描 -->
+    <context:component-scan base-package="com.qianfeng"/>
+    <!-- 注解开发的驱动配置 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!-- 注册FastJson，springMVC在转换json时，就使用FastJson -->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <!-- 支持转换的类型为：json -->
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- 视图解析器
+         接收 后端控制的方法返回值  "index"  "hello"   解析后： “/index.jsp”  "/hello.jsp"
+     -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 注入前后缀 -->
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 解决静态资源无法访问的问题 -->
+    <mvc:default-servlet-handler/>
+
+</beans>
